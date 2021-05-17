@@ -1,6 +1,8 @@
 import os
 
+from fastapi import FastAPI
 import numpy as np
+
 import ray
 from gym.spaces import Box, Discrete
 from ray import serve
@@ -19,14 +21,18 @@ def restore_trainer(checkpoint_path):
     return _trainer
 
 
-@serve.deployment(route_prefix="/predict")
+app = FastAPI()
+
+
+@serve.deployment(name="rl", route_prefix="/predict")
+@serve.ingress(app)
 class Backend:
     def __init__(self, checkpoint_bytes, checkpoint_tune_meta_bytes):
         replica_tag = serve.get_replica_context().replica_tag
 
         # Cache the checkpoint file locally.
-        checkpoint_path = f"checkpoint-{replica_tag}"
-        checkpoint_tune_meta_path = f"checkpoint-{replica_tag}.tune_metadata"
+        checkpoint_path = f"/tmp/checkpoint-{replica_tag}"
+        checkpoint_tune_meta_path = f"/tmp/checkpoint-{replica_tag}.tune_metadata"
         with open(checkpoint_path, "wb") as f:
             f.write(checkpoint_bytes)
         with open(checkpoint_tune_meta_path, "wb") as f:
@@ -35,8 +41,11 @@ class Backend:
         # Restore the trainer.
         self.agent = restore_trainer(checkpoint_path)
 
-    def __call__(self, request):
-        return {"status": "ok"}
+    @app.get("/")
+    def compute_action(self):
+        arr = [1 for _ in range(47)]
+        actions = self.agent.compute_action(arr).astype(float).tolist()
+        return {"result": actions}
 
 
 if __name__ == "__main__":
