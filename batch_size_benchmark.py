@@ -30,7 +30,7 @@ def timeit(func):
         end = time.time()
         arr.append((end - start) * 1e6)
     arr = np.array(arr) / 1000
-    return np.mean(arr), np.std(arr)
+    return {"mean": np.mean(arr), "std": np.std(arr)}
 
 
 if __name__ == "__main__":
