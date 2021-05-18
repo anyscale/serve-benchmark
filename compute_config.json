@@ -1,0 +1,29 @@
+{
+  "cloud_id": "cld_17WvYIBBkdgLwEUNcLeRAE",
+  "max_workers": null,
+  "region": "us-west-2",
+  "allowed_azs": null,
+  "head_node_type": {
+    "name": "head_node",
+    "instance_type": "m5.2xlarge"
+  },
+  "worker_node_types": [
+    {
+      "name": "worker-node-0",
+      "instance_type": "m5.2xlarge",
+      "min_workers": 0,
+      "max_workers": 1000,
+      "use_spot": false
+    },
+    {
+      "name": "worker-node-1",
+      "instance_type": "g3.4xlarge",
+      "min_workers": 0,
+      "max_workers": 10,
+      "use_spot": false
+    }
+  ],
+  "aws": null,
+  "gcp": null,
+  "azure": null
+}

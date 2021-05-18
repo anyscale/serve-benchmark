@@ -1,0 +1,16 @@
+{
+  "config_json": {
+    "base_image": "anyscale/ray-ml:pinned-nightly",
+    "env_vars": {},
+    "debian_packages": ["unzip", "curl"],
+    "python": {
+      "pip_packages": ["pydantic==1.8.1"],
+      "conda_packages": null
+    },
+    "post_build_cmds": [
+      "git clone https://github.com/wg/wrk.git && cd wrk && make -j && sudo mv wrk /usr/local/bin/",
+      "pip uninstall -y ray && pip install -U https://s3-us-west-2.amazonaws.com/ray-wheels/master/cd32a92edc275be82074b8426a24121bcf6bab0f/ray-2.0.0.dev0-cp37-cp37m-manylinux2014_x86_64.whl",
+      "echo 2b8a910 && git clone https://github.com/anyscale/serve-benchmark.git /home/ray/benchmark-serve/benchmark-repo"
+    ]
+  }
+}
