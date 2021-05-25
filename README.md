@@ -24,6 +24,9 @@ Run `batch_size_benchmark.py`. `linear_scaling_us` is the hypothetical number fo
 - Use `NUM_REPLICAS=<int> python scale.py` to dynamically scale the deployment.
 - Use `benchmark_client.py` to benchmark each http proxy to see the individual and aggregated throughput.
 - For deployment scenario, you will need to add a load balancer in front. See `register_elb.sh` for the shell command to register all instances within an anyscale session to load balancer. You can also use the `benchmark_client.py`, but make sure to point it to the load balancer address.
+- Notice we we start one HTTP proxy per Ray node, this is so that we can horizontally scale out I/O bottleneck
+![https://user-images.githubusercontent.com/21118851/119529104-a50e6600-bd36-11eb-83c2-ced54603b052.png](https://user-images.githubusercontent.com/21118851/119529104-a50e6600-bd36-11eb-83c2-ced54603b052.png)
+
 
 ### Latency Benchmark
 
