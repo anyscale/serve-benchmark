@@ -49,7 +49,7 @@ class Backend:
 
 
 if __name__ == "__main__":
-    ray.init(address="auto")
+    ray.init(address="auto", namespace="serve")
     serve.start(
         detached=True, http_options={"host": "0.0.0.0", "location": "EveryNode"}
     )
